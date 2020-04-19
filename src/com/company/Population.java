@@ -70,6 +70,20 @@ class Population {
         }
 
     }
+    //percentage of people Infected
+    public void percentInfected(){
+        double peopleInfected = 0;
+        double populationLength = this.length;
+        for(Person person: myPopulation){
+            if(person.infected == 1){
+                peopleInfected++;
+            }
+
+        }
+        double percentInfected = (peopleInfected / (populationLength)* 100) ;
+        System.out.println(percentInfected + "% of people are infected");
+    }
+
 
 
 

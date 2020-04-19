@@ -2,7 +2,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /* each person will have an identity from 1 to length of population, an infected value(0=not infected,
-1 = infected, 2=immune) and an infection length which will increase up to 7 days.
+1 = infected, 2=immune) and an infection length which will increase up to 7 days (day 1 will be
+infection counter 2, day 7 will be infection counter 8)
  */
 
 class Person {
@@ -51,12 +52,11 @@ class Person {
 
       Population Manhattan = new Population(10);
       System.out.println(Manhattan);
-      Manhattan.newInfection(2);
+      Manhattan.oneDay(1);
       System.out.println(Manhattan);
-      Manhattan.oneDay(0);
+      Manhattan.multipleDays(8,1);
       System.out.println(Manhattan);
-      Manhattan.multipleDays(3,1);
-      System.out.println(Manhattan);
+      Manhattan.percentInfected();
 
 
 
