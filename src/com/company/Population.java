@@ -67,7 +67,9 @@ class Population {
      public void multipleDays(int days, int infectionsPerDay){
         for(int i =1; i <= days; i++){
             oneDay(infectionsPerDay);
+
         }
+         System.out.println("Running " + days + " days with " + infectionsPerDay + " infections per day!");
 
     }
     //percentage of people Infected
@@ -81,7 +83,41 @@ class Population {
 
         }
         double percentInfected = (peopleInfected / (populationLength)* 100) ;
-        System.out.println(percentInfected + "% of people are infected");
+        System.out.printf("%.1f", percentInfected);
+        System.out.println("% of people are infected");
+    }
+//percentage of people recovered
+    public void percentRecovered(){
+        double peopleRecovered = 0;
+        double populationLength = this.length;
+        for(Person person:myPopulation){
+            if(person.infected == 2){
+                peopleRecovered++;
+            }
+        }
+        double percentRecovered = (peopleRecovered / (populationLength) * 100);
+        System.out.printf("%.1f", percentRecovered);
+        System.out.println("% of people are recovered");
+    }
+    //percentage of people not yet infected or recovered
+    public void percentNotInfected(){
+        double peopleNotInfected = 0;
+        double populationLength = this.length;
+        for(Person person:myPopulation){
+            if(person.infected == 0){
+                peopleNotInfected++;
+            }
+        }
+        double percentNotInfected = (peopleNotInfected / (populationLength) * 100);
+        System.out.printf("%.1f", percentNotInfected);
+        System.out.println("% of people have not been infected");
+    }
+    //gives statistics on population
+    public void stats(){
+        System.out.println("In this population:");
+        percentInfected();
+        percentRecovered();
+        percentNotInfected();
     }
 
 

@@ -20,7 +20,15 @@ class Person {
     }
 
     public String toString() {
-        return ("My values are " + "( " + identity + " , " + infected + " , " + infectionLength + " )");
+        if(infected == 0){
+            return "(Person " + identity + ": Not infected)";
+        }
+        if(infected == 1){
+            return "(Person " + identity + ": Infection day " + (infectionLength -1)+ " )";
+        }
+
+        return ("(Person " + identity + ": Immune)");
+
     }
 
     //infect this person if not infected
@@ -28,8 +36,6 @@ class Person {
         if(this.infected == 0){
             this.infected = 1;
             this.infectionLength = 1;
-            System.out.println("Person " + this.identity + " infected");
-
         }else{
             System.out.println("Person " + this.identity + " already infected or immune");
 
@@ -50,13 +56,12 @@ class Person {
         // write your code here
         Person Joe = new Person(1, 0, 0);
 
-      Population Manhattan = new Population(10);
+      Population Manhattan = new Population(100);
       System.out.println(Manhattan);
-      Manhattan.oneDay(1);
+      Manhattan.stats();
+      Manhattan.multipleDays(25,3);
       System.out.println(Manhattan);
-      Manhattan.multipleDays(8,1);
-      System.out.println(Manhattan);
-      Manhattan.percentInfected();
+      Manhattan.stats();
 
 
 
