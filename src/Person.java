@@ -9,21 +9,28 @@ infection counter 2, day 7 will be infection counter 8)
 class Person {
     ArrayList<Person> population = new ArrayList<Person>();
     int identity;
-    int infected;
+    InfectionState infected;
     int infectionLength;
 
-    public Person(int myIdentity, int myInfected, int myInfectionlength) {
+    public Person(int myIdentity, InfectionState myInfected, int myInfectionlength) {
         this.identity = myIdentity;
         this.infected = myInfected;
         this.infectionLength = myInfectionlength;
 
     }
 
+    public static enum InfectionState{
+        UNINFECTED,
+        INFECTED,
+        IMMUNE
+    }
+
     public String toString() {
-        if(infected == 0){
+
+        if(infected == InfectionState.UNINFECTED){
             return "(Person " + identity + ": Not infected)";
         }
-        if(infected == 1){
+        if(infected == InfectionState.INFECTED){
             return "(Person " + identity + ": Infection day " + (infectionLength -1)+ " )";
         }
 
@@ -33,8 +40,8 @@ class Person {
 
     //infect this person if not infected
     public void infectMe(){
-        if(this.infected == 0){
-            this.infected = 1;
+        if(this.infected == InfectionState.UNINFECTED){
+            this.infected = InfectionState.INFECTED;
             this.infectionLength = 1;
         }else{
             System.out.println("Person " + this.identity + " already infected or immune");
@@ -44,7 +51,7 @@ class Person {
 // check if person infected
 
     public boolean isInfected(){
-        if(this.infected == 0){
+        if(this.infected == InfectionState.UNINFECTED){
             return false;
         } else{
             return true;
@@ -54,7 +61,7 @@ class Person {
 
     public static void main(String[] args) {
         // write your code here
-        Person Joe = new Person(1, 0, 0);
+        Person Joe = new Person(1, InfectionState.UNINFECTED, 0);
 
       Population Manhattan = new Population(100);
       System.out.println(Manhattan);

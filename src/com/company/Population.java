@@ -4,15 +4,15 @@ import java.util.Random;
 
 class Population {
     ArrayList<Person> myPopulation = new ArrayList<Person>();
-    int length;
+    int size;
 
 
     // new population of length myLength
 
     public Population(int myLength) {
-        this.length = myLength;
-        for (int i = 1; i <= this.length; i++) {
-            Person p = new Person(i, 0, 0);
+        this.size = myLength;
+        for (int i = 1; i <= this.size; i++) {
+            Person p = new Person(i, Person.InfectionState.UNINFECTED, 0);
             myPopulation.add(p);
         }
     }
@@ -24,14 +24,13 @@ class Population {
 
 //infect "infections" amount of people within this population if they are not infected
 
-    public void newInfection(int infections){
-        int count = 0;
-        for(int i =0; i < myPopulation.size() && count < infections ; i++){
-                Person workingPerson = myPopulation.get(i);
-                if(workingPerson.isInfected() == false){
-                        workingPerson.infectMe();
-                        myPopulation.set(myPopulation.indexOf(myPopulation.get(i)), workingPerson);
-                        count++;
+    public void newInfection(int numberToBeInfected){
+        int newInfectionsSoFar = 0;
+        for(int i =0; i < myPopulation.size() && newInfectionsSoFar < numberToBeInfected ; i++){
+
+                if(!myPopulation.get(i).isInfected()){
+                       myPopulation.get(i).infectMe();
+                       newInfectionsSoFar++;
                 }
                 }
 
@@ -55,7 +54,7 @@ class Population {
             if(person.infectionLength == 8){
                 Person workingPerson = new Person(person.identity, person.infected, person.infectionLength);
                 workingPerson.infectionLength = 0;
-                workingPerson.infected = 2;
+                workingPerson.infected = Person.InfectionState.IMMUNE ;
                 myPopulation.set(myPopulation.indexOf(person), workingPerson);
             }
         }
@@ -75,9 +74,9 @@ class Population {
     //percentage of people Infected
     public void percentInfected(){
         double peopleInfected = 0;
-        double populationLength = this.length;
+        double populationLength = this.size;
         for(Person person: myPopulation){
-            if(person.infected == 1){
+            if(person.infected == Person.InfectionState.INFECTED){
                 peopleInfected++;
             }
 
@@ -86,25 +85,25 @@ class Population {
         System.out.printf("%.1f", percentInfected);
         System.out.println("% of people are infected");
     }
-//percentage of people recovered
-    public void percentRecovered(){
-        double peopleRecovered = 0;
-        double populationLength = this.length;
+//percentage of people immune
+    public void percentImmune(){
+        double peopleImmune = 0;
+        double populationLength = this.size;
         for(Person person:myPopulation){
-            if(person.infected == 2){
-                peopleRecovered++;
+            if(person.infected == Person.InfectionState.IMMUNE){
+                peopleImmune++;
             }
         }
-        double percentRecovered = (peopleRecovered / (populationLength) * 100);
-        System.out.printf("%.1f", percentRecovered);
+        double percentImmune = (peopleImmune / (populationLength) * 100);
+        System.out.printf("%.1f", percentImmune);
         System.out.println("% of people are recovered");
     }
     //percentage of people not yet infected or recovered
     public void percentNotInfected(){
         double peopleNotInfected = 0;
-        double populationLength = this.length;
+        double populationLength = this.size;
         for(Person person:myPopulation){
-            if(person.infected == 0){
+            if(person.infected == Person.InfectionState.UNINFECTED){
                 peopleNotInfected++;
             }
         }
@@ -116,7 +115,7 @@ class Population {
     public void stats(){
         System.out.println("In this population:");
         percentInfected();
-        percentRecovered();
+        percentImmune();
         percentNotInfected();
     }
 
