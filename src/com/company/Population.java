@@ -22,24 +22,34 @@ class Population {
         return ("My population is " + myPopulation);
     }
 
-//infect "infections" amount of people within this population if they are not infected
+/*infect amount of people within this population if they are not infected. R0 is the amount
+of people that one infected person will spread too
+ */
 
-    public void newInfection(int numberToBeInfected){
+    public void newInfection(int R0) {
         int newInfectionsSoFar = 0;
-        for(int i =0; i < myPopulation.size() && newInfectionsSoFar < numberToBeInfected ; i++){
+        double numberToBeInfected = amountOfPeopleInfected() * R0;
+        for (int i = 0; i < myPopulation.size() && newInfectionsSoFar < numberToBeInfected; i++) {
 
-                if(!myPopulation.get(i).isInfected()){
-                       myPopulation.get(i).infectMe();
-                       newInfectionsSoFar++;
-                }
-                }
+            if (!myPopulation.get(i).isInfected()) {
+                myPopulation.get(i).infectMe();
+                newInfectionsSoFar++;
+            }
+        }
+    }
 
+//infect first person in population
+   public void firstInfection() {
+            myPopulation.get(0).infectMe();
         }
 
+
+
+
    // method to run one days worth of infections and tick over the infection counter (infectionLength)
-    public void oneDay(int newinfections){
+    public void oneDay(int R0){
         //new infections
-        newInfection(newinfections);
+        newInfection(R0);
 
         //infection counter tickover
         for(Person person : myPopulation){
@@ -63,27 +73,33 @@ class Population {
 
 
     //method to run "days" amount of days worth of infections with "infectionsPerDay" amount of infections per day
-     public void multipleDays(int days, int infectionsPerDay){
+     public void multipleDays(int days, int R0){
         for(int i =1; i <= days; i++){
-            oneDay(infectionsPerDay);
+            oneDay(R0);
 
         }
-         System.out.println("Running " + days + " days with " + infectionsPerDay + " infections per day!");
+         System.out.println("Running " + days + " days with an R0 of " + R0);
 
     }
-    //percentage of people Infected
-    public void percentInfected(){
+
+    public double amountOfPeopleInfected(){
         double peopleInfected = 0;
-        double populationLength = this.size;
         for(Person person: myPopulation){
             if(person.infected == Person.InfectionState.INFECTED){
                 peopleInfected++;
             }
 
         }
-        double percentInfected = (peopleInfected / (populationLength)* 100) ;
+        return peopleInfected;
+
+    }
+    //percentage of people Infected
+    public void percentInfected(){
+        double populationLength = this.size;
+        double percentInfected = (amountOfPeopleInfected() / (populationLength)* 100) ;
         System.out.printf("%.1f", percentInfected);
         System.out.println("% of people are infected");
+
     }
 //percentage of people immune
     public void percentImmune(){

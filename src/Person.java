@@ -66,7 +66,8 @@ class Person {
       Population Manhattan = new Population(100);
       System.out.println(Manhattan);
       Manhattan.stats();
-      Manhattan.multipleDays(25,3);
+      Manhattan.firstInfection();
+      Manhattan.multipleDays(5,1);
       System.out.println(Manhattan);
       Manhattan.stats();
 
