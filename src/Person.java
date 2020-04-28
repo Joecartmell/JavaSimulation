@@ -10,12 +10,12 @@ class Person {
     ArrayList<Person> population = new ArrayList<Person>();
     int identity;
     InfectionState infected;
-    int infectionLength;
+    int dayInfected;
 
-    public Person(int myIdentity, InfectionState myInfected, int myInfectionlength) {
+    public Person(int myIdentity, InfectionState myInfected, int myDayInfected) {
         this.identity = myIdentity;
         this.infected = myInfected;
-        this.infectionLength = myInfectionlength;
+        this.dayInfected = myDayInfected;
 
     }
 
@@ -31,7 +31,7 @@ class Person {
             return "(Person " + identity + ": Not infected)";
         }
         if(infected == InfectionState.INFECTED){
-            return "(Person " + identity + ": Infection day " + (infectionLength -1)+ " )";
+            return "(Person " + identity + ": Infected on day" + this.dayInfected + ")" ;
         }
 
         return ("(Person " + identity + ": Immune)");
@@ -42,7 +42,7 @@ class Person {
     public void infectMe(){
         if(this.infected == InfectionState.UNINFECTED){
             this.infected = InfectionState.INFECTED;
-            this.infectionLength = 1;
+            this.dayInfected = Simulator.dayOfSimulation;
         }else{
             System.out.println("Person " + this.identity + " already infected or immune");
 
@@ -59,22 +59,5 @@ class Person {
     }
 
 
-    public static void main(String[] args) {
-        // write your code here
-        Person Joe = new Person(1, InfectionState.UNINFECTED, 0);
-
-      Population Manhattan = new Population(100);
-      System.out.println(Manhattan);
-      Manhattan.stats();
-      Manhattan.firstInfection();
-      Manhattan.multipleDays(5,1);
-      System.out.println(Manhattan);
-      Manhattan.stats();
-
-
-
-
-
-    }
 }
 

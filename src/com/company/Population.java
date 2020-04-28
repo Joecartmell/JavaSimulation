@@ -4,15 +4,15 @@ import java.util.Random;
 
 class Population {
     ArrayList<Person> myPopulation = new ArrayList<Person>();
+    public static ArrayList<Integer> ycoordinates = new ArrayList<>();
+    public static ArrayList<Integer> xcoordinates = new ArrayList<>();
     int size;
-
-
     // new population of length myLength
 
-    public Population(int myLength) {
-        this.size = myLength;
+    public Population(int mySize) {
+        this.size = mySize;
         for (int i = 1; i <= this.size; i++) {
-            Person p = new Person(i, Person.InfectionState.UNINFECTED, 0);
+            Person p = new Person(i, Person.InfectionState.UNINFECTED, 10000);
             myPopulation.add(p);
         }
     }
@@ -28,7 +28,7 @@ of people that one infected person will spread too
 
     public void newInfection(int R0) {
         int newInfectionsSoFar = 0;
-        double numberToBeInfected = amountOfPeopleInfected() * R0;
+        double numberToBeInfected = numberOfPeopleInfected() * R0;
         for (int i = 0; i < myPopulation.size() && newInfectionsSoFar < numberToBeInfected; i++) {
 
             if (!myPopulation.get(i).isInfected()) {
@@ -40,49 +40,43 @@ of people that one infected person will spread too
 
 //infect first person in population
    public void firstInfection() {
-            myPopulation.get(0).infectMe();
+
+        myPopulation.get(0).infectMe();
+       int peopleInfected = (int) numberOfPeopleInfected();
+       ycoordinates.add(peopleInfected);
         }
 
 
 
 
    // method to run one days worth of infections and tick over the infection counter (infectionLength)
-    public void oneDay(int R0){
+    public void simulateOneDay(int R0){
         //new infections
+        Simulator.dayOfSimulation++;
         newInfection(R0);
 
         //infection counter tickover
         for(Person person : myPopulation){
-            for(int i = 1; i <= 7; i++){
-                if(person.infectionLength == i){
-                    Person workingPerson = new Person(person.identity, person.infected, person.infectionLength);
-                    workingPerson.infectionLength = i +1;
-                    myPopulation.set(myPopulation.indexOf(person), workingPerson);
-                }
-
-            }
-            if(person.infectionLength == 8){
-                Person workingPerson = new Person(person.identity, person.infected, person.infectionLength);
-                workingPerson.infectionLength = 0;
-                workingPerson.infected = Person.InfectionState.IMMUNE ;
-                myPopulation.set(myPopulation.indexOf(person), workingPerson);
+            if(Simulator.dayOfSimulation - person.dayInfected >= 6){
+                person.infected = Person.InfectionState.IMMUNE ;
             }
         }
-        }
-
+        int peopleInfected = (int) numberOfPeopleInfected();
+        ycoordinates.add(peopleInfected);
+    }
 
 
     //method to run "days" amount of days worth of infections with "infectionsPerDay" amount of infections per day
-     public void multipleDays(int days, int R0){
-        for(int i =1; i <= days; i++){
-            oneDay(R0);
+     public void simulateMultipleDays(int days, int R0){
+            for(int i =1; i <= days; i++){
+            simulateOneDay(R0);
 
         }
          System.out.println("Running " + days + " days with an R0 of " + R0);
 
     }
 
-    public double amountOfPeopleInfected(){
+    public double numberOfPeopleInfected(){
         double peopleInfected = 0;
         for(Person person: myPopulation){
             if(person.infected == Person.InfectionState.INFECTED){
@@ -95,8 +89,7 @@ of people that one infected person will spread too
     }
     //percentage of people Infected
     public void percentInfected(){
-        double populationLength = this.size;
-        double percentInfected = (amountOfPeopleInfected() / (populationLength)* 100) ;
+        double percentInfected = (numberOfPeopleInfected() / myPopulation.size()* 100) ;
         System.out.printf("%.1f", percentInfected);
         System.out.println("% of people are infected");
 
@@ -135,7 +128,12 @@ of people that one infected person will spread too
         percentNotInfected();
     }
 
+    public void createCoordinates(){
+        for(int i=0; i <= Simulator.dayOfSimulation; i++) {
+            xcoordinates.add(i);
+        }
+        System.out.println(xcoordinates);
+        System.out.println(ycoordinates);
 
-
-
+    }
 }
