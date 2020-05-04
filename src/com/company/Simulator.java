@@ -18,8 +18,9 @@ public class Simulator {
         System.out.println(Manhattan);
         Manhattan.stats();
         Graph graph = new Graph();
+		 Manhattan.createCoordinates();
         graph.CreateGraph();
-        Manhattan.createCoordinates();
+       
 
 
 
