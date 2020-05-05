@@ -11,19 +11,43 @@ public class Graph extends JPanel {
         super.paintComponent(g);
         Graphics2D g1 = (Graphics2D) g;
         g1.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        int width = getWidth(); 
-		System.out.println(width);
-        int height = getHeight();
-		System.out.println(height);
-        g1.draw(new Line2D.Double(mar, mar, mar, height - mar));
-        g1.draw(new Line2D.Double(mar, height - mar, width - mar, height - mar));
-        double xscalefactor = (double) (width - 2 * mar) / (getMax_x_value());               // xscalefactor was previously named x
-        double yscalefactor = (double) (height - 2 * mar) / getMax_y_value();  // yscalefactor was previously named scale   //getMax_y_value was previously named getMax
+        int width = getWidth();     // width of available area for drawing measured in pixels
+        int height = getHeight();   // height of available area for drawing measured in pixels
+		System.out.printf("width of drawing area in pixels: %d\n",width);
+		System.out.printf("height of drawing area in pixels: %d\n",height);
+		//draw vertical for the y-axis
+        g1.draw(new Line2D.Double(mar, mar, mar, height - mar));  
+		
+        // draw horizontalfor the x-axis
+        // leave margin left and right of the plotting area in the drawing area		
+        g1.draw(new Line2D.Double(mar, height - mar, width - mar, height - mar)); 
+        int extent_of_x_axis_in_pixels = width - mar - mar ; 	// this is the available width  for plotting my data
+
+        //draw vertical for the y-axis
+		// leave margin above and below the plotting area in the drawing area
+        g1.draw(new Line2D.Double(mar, mar, mar, height - mar));  
+        int extent_of_y_axis_in_pixels = height - mar - mar ; 	// this is the available height  for plotting my data		
+      
+	    //draw and fill an circle at the centred at pixel coordinates (0,0) of the whole drawing area
+		// and of radius 5 pixels. 
+		// To do this specify x=-5 pixels, y=-5 pixels, width=5 pixels, height = 5 pixels
+		// Note that (0,0) coordinates in pixels is top-left of the drawing area
+		g1.fill(new Ellipse2D.Double(-5, -5, 10, 10));
+		
+		//now draw a circle at the origin of our application plotting coordinates i.e.
+		// where the x-axis interesects the y-axis. 
+		// This open (unfilled) circle is the origin in my plotting coordinates
+		g1.draw(new Ellipse2D.Double(mar - 5 , height - mar -5 , 10, 10));
+
+		// 
+		// Multiplying my application units by a scale factor converts my units to pixels
+        double xscalefactor = (double) (extent_of_x_axis_in_pixels) / (getMax_x_value()); 
+        double yscalefactor = (double) (extent_of_y_axis_in_pixels) / getMax_y_value();  
         g1.setPaint(Color.BLUE);
 
         for (int i = 0; i < Population.xcoordinates.size(); i++) {
             double x1 = mar + Population.xcoordinates.get(i) * xscalefactor;
-            double y1 = height - mar - yscalefactor * Population.ycoordinates.get(i);
+            double y1 = height - mar - yscalefactor * Population.ycoordinates.get(i);        // This has to flip because y=0 in drawing area is at top but y=0 in plotting coordinates is at bottom
 			System.out.printf("plotting x at : %f, plotting y at %f\n", x1,y1); 
             g1.draw(new Line2D.Double(x1, y1, x1 , y1 + 20));
             g1.fill(new Ellipse2D.Double(x1 - 2, y1 - 2, 4, 4));
