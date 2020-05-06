@@ -28,7 +28,7 @@ public class Graph extends JPanel {
         g1.draw(new Line2D.Double(mar, mar, mar, height - mar));  
         int extent_of_y_axis_in_pixels = height - mar - mar ; 	// this is the available height  for plotting my data		
       
-	    //draw and fill an circle at the centred at pixel coordinates (0,0) of the whole drawing area
+	    //draw and fill a circle at the centred at pixel coordinates (0,0) of the whole drawing area
 		// and of radius 5 pixels. 
 		// To do this specify x=-5 pixels, y=-5 pixels, width=5 pixels, height = 5 pixels
 		// Note that (0,0) coordinates in pixels is top-left of the drawing area
@@ -47,17 +47,22 @@ public class Graph extends JPanel {
 
         for (int i = 0; i < Population.xcoordinates.size(); i++) {
             double x1 = mar + Population.xcoordinates.get(i) * xscalefactor;
-            double y1 = height - mar - yscalefactor * Population.ycoordinates.get(i);        // This has to flip because y=0 in drawing area is at top but y=0 in plotting coordinates is at bottom
-			System.out.printf("plotting x at : %f, plotting y at %f\n", x1,y1); 
-            g1.draw(new Line2D.Double(x1, y1, x1 , y1 + 20));
+            double y1 = height - mar - yscalefactor * Population.ycoordinates.get(i);          // This has to flip because y=0 in drawing area is at top but y=0 in plotting coordinates is at bottom
+            if(Population.xcoordinates.get(i) < (Population.xcoordinates.size()-1)){          //draw lines between each point if it is not the last point
+                double x2 = mar + Population.xcoordinates.get(i+1) * xscalefactor;
+                double y2 = height - mar - yscalefactor * Population.ycoordinates.get(i+1);
+                g1.draw(new Line2D.Double(x1, y1, x2, y2));
+            }
+            g1.draw(new Line2D.Double(x1, height - mar, x1, height-mar +10 ));     //x axis ticks(days)
+			System.out.printf("plotting x at : %f, plotting y at %f\n", x1,y1);
             g1.fill(new Ellipse2D.Double(x1 - 2, y1 - 2, 4, 4));
         }
 
     }
 	
 	private int getMax_x_value() { 
-        return 10;
-    }
+        return Population.xcoordinates.size();
+    }        //returns size of xcoordinates which is essentially same as max value
 
     private int getMax_y_value() {
         int max = -Integer.MAX_VALUE;

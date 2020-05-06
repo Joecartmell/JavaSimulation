@@ -14,11 +14,11 @@ public class Simulator {
         Manhattan.stats();
         Manhattan.firstInfection();
         System.out.println(Manhattan);
-        Manhattan.simulateMultipleDays(10, 1);
+        Manhattan.simulateMultipleDays(10, 2);
         System.out.println(Manhattan);
         Manhattan.stats();
         Graph graph = new Graph();
-		 Manhattan.createCoordinates();
+        Manhattan.createCoordinates();
         graph.CreateGraph();
        
 
