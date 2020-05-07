@@ -9,7 +9,7 @@ public class Simulator {
         // write your code here
         Person Joe = new Person(1, Person.InfectionState.UNINFECTED, 0);
 
-        Population Manhattan = new Population(100);
+        Population Manhattan = new Population(500);
         System.out.println(Manhattan);
         Manhattan.stats();
         Manhattan.firstInfection();

@@ -1,10 +1,11 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.geom.*;
+import java.applet.*;
 import java.util.ArrayList;
 
 public class Graph extends JPanel {
-    int mar = 50;
+    int mar = 100;
 
 
     protected void paintComponent(Graphics g) {
@@ -53,10 +54,36 @@ public class Graph extends JPanel {
                 double y2 = height - mar - yscalefactor * Population.ycoordinates.get(i+1);
                 g1.draw(new Line2D.Double(x1, y1, x2, y2));
             }
-            g1.draw(new Line2D.Double(x1, height - mar, x1, height-mar +10 ));     //x axis ticks(days)
-			System.out.printf("plotting x at : %f, plotting y at %f\n", x1,y1);
+            g1.draw(new Line2D.Double(x1, height - mar, x1, height-mar +8 ));   //x axis ticks(days)
+            String xTick = Integer.toString(Population.xcoordinates.get(i));
+            g.drawString(xTick,(int)x1,(int)height-mar +22 );
+            System.out.printf("plotting x at : %f, plotting y at %f\n", x1,y1);
             g1.fill(new Ellipse2D.Double(x1 - 2, y1 - 2, 4, 4));
+
         }
+
+
+        double xValueOfLabel = mar + (Population.xcoordinates.size()/2) * xscalefactor;        //x axis label
+        g.drawString("Days of Simulation", (int)xValueOfLabel, height-mar+35);
+
+        double yValueOfLabel = height - mar - yscalefactor * (getMax_y_value()/2);       //y axis label
+        g.drawString("Total",mar-85, (int) yValueOfLabel);
+        g.drawString("Infections",mar-85, (int) yValueOfLabel+15);
+
+        double yTickInterval = Math.ceil(((getMax_y_value()/10)+1) / 10) * 10;          //y axis ticks and labels
+        System.out.println(yTickInterval);
+        for(int i = 1; i<=10; i++){
+            double yTickValue = height - mar - yscalefactor * (i*yTickInterval);
+            g1.draw(new Line2D.Double(mar, yTickValue, mar-5, yTickValue));
+            Integer yTickRealValue = i * (int)yTickInterval;
+            String yTickLabel = Integer.toString(yTickRealValue);
+            g.drawString(yTickLabel,mar-25,(int)yTickValue);
+        }
+
+
+
+
+
 
     }
 	
