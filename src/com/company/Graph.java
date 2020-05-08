@@ -81,10 +81,17 @@ public class Graph extends JPanel {
         }
 
 
-
-
-
-
+        for (int i = 0; i < Population.xcoordinates.size(); i++) {               //plot y=X^2
+            double x1 = mar + Population.xcoordinates.get(i) * xscalefactor;
+            double y1 = height - mar - yscalefactor * (Population.xcoordinates.get(i)*Population.xcoordinates.get(i));
+            if (Population.xcoordinates.get(i) < (Population.xcoordinates.size() - 1)) {
+                double x2 = mar + Population.xcoordinates.get(i + 1) * xscalefactor;
+                double y2 = height - mar - yscalefactor * (Population.xcoordinates.get(i+1)*Population.xcoordinates.get(i+1));
+                System.out.println("X1="+x1 +", y1="+y1+", x2=" + x2 + ", y2=" + y2);
+                g1.setColor(Color.GREEN);
+                g1.draw(new Line2D.Double(x1, y1, x2, y2));
+            }
+        }
     }
 	
 	private int getMax_x_value() { 
